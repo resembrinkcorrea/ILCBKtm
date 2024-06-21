@@ -7,13 +7,15 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "11"
+            }
         }
     }
     
@@ -33,6 +35,15 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+            //koin
+            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
+            implementation("io.insert-koin:koin-core")
+            implementation("io.insert-koin:koin-android")
+
+            //ktor
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -42,10 +53,37 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             api(compose.materialIconsExtended)
+
+            //Navigatio Pre Compose
+            api("moe.tlaster:precompose:1.5.10")
+
+            //ViewModel
+            api("moe.tlaster:precompose-viewmodel:1.5.10")
+
+
+            //Koin Common
+            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
+            implementation("io.insert-koin:koin-core")
+            implementation("io.insert-koin:koin-compose")
+            api("moe.tlaster:precompose-koin:1.5.10")
+
+            //ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.kotlinx.coroutines.core)
+
+            implementation(libs.ktor.serialization)
+            implementation(libs.ktor.content.negotiation)
         }
 
         commonMain.dependencies {
             implementation(compose.components.resources)
+        }
+
+        iosMain.dependencies {
+            //iOS dependencies
+
+            //ktor
+            implementation(libs.ktor.client.darwin)
         }
 
     }
@@ -89,5 +127,12 @@ android {
     dependencies {
         debugImplementation(compose.uiTooling)
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.12"
+    }
+}
+dependencies {
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }
 
