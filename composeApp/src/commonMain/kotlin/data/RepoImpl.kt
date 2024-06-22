@@ -11,7 +11,9 @@ import io.ktor.http.contentType
 import io.ktor.http.parseAndSortContentTypeHeader
 import model.ResponseUser
 
-private const val BASE_URL = "http://74.249.92.43:8080/saa-rest/webresources/intranetSAA/"
+//private const val BASE_URL = "http://74.249.92.43:8080/saa-rest/webresources/intranetSAA/"
+private const val BASE_URL = "http://sslcbpopen.eastus2.cloudapp.azure.com:8080/saa-rest/webresources/intranetSAA/"
+
 
 class RepoImpl(private val httpClient: HttpClient) : Repository {
     override suspend fun getDataUsuario(userRequest: UserRequest): List<ResponseUser> {

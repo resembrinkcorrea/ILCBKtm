@@ -15,18 +15,12 @@ sealed class ResourceUiState<out T> {
     data class Error(val message: String) : ResourceUiState<Nothing>()
 }
 
-class UsuarioViewModel(private val repo: Repository) : ViewModel() {
+class UserViewModel(private val repo: Repository) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ResourceUiState<List<ResponseUser>>>(ResourceUiState.Loading)
-
     val uiState = _uiState.asStateFlow()
 
     private lateinit var userRequest: UserRequest
-
-
-    init {
-        getUserList()
-    }
 
     fun setUsuarioRequest(
         usuario: String,
@@ -44,9 +38,11 @@ class UsuarioViewModel(private val repo: Repository) : ViewModel() {
             ip_conexion = ip_conexion,
             sistema = sistema
         )
+
+        getUserList()
     }
 
-    private fun getUserList() {
+     fun getUserList() {
         viewModelScope.launch {
             try {
                 val users = repo.getDataUsuario(userRequest)

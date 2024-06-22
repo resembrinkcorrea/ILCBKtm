@@ -43,6 +43,7 @@ kotlin {
 
             //ktor
             implementation(libs.ktor.client.okhttp)
+           // implementation("io.ktor:ktor-client-cio:2.3.0")
             implementation(libs.kotlinx.coroutines.android)
         }
         commonMain.dependencies {
@@ -69,6 +70,7 @@ kotlin {
 
             //ktor
             implementation(libs.ktor.client.core)
+            //implementation("io.ktor:ktor-client-cio:2.3.0")
             implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.ktor.serialization)
