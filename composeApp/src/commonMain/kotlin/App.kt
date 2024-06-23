@@ -14,19 +14,18 @@ import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.navigation.rememberNavigator
 import navigation.Navigation
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.KoinContext
 import themeapp.getColorsTheme
 
 @Composable
 @Preview
 fun App() {
-    val navController = rememberNavController()
+
 
     PreComposeApp {
-        KoinContext {
             val colors = getColorsTheme()
 
             AppTheme {
+
                 val navigator = rememberNavigator()
 
                 Scaffold(
@@ -42,19 +41,31 @@ fun App() {
                                 )
                             },
                             navigationIcon = {
-                                Icon(
-                                    imageVector = Icons.Default.Apps,
-                                    tint = colors.textColor,
-                                    contentDescription = "Dashboard back"
-                                )
-                            },
-                            backgroundColor = colors.backGroundColor
+                                    Icon(
+                                        modifier = Modifier.padding(start = 16.dp),
+                                        imageVector = Icons.Default.Apps,
+                                        tint = colors.textColor,
+                                        contentDescription = "Dashboard back"
+
+                                    )
+                            }, backgroundColor = colors.backGroundColor
                         )
-                    }
+                    },
+
+
+
+
                 ) {
-                    Navigation(navController = navController)
+
+                    Navigation(navigator)
                 }
+
+
             }
         }
-    }
+
+
 }
+
+
+

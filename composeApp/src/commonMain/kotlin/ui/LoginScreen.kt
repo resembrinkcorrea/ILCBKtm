@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,27 +30,16 @@ import presentacion.ResourceUiState
 @Composable
 fun LoginScreen(
     uiState: ResourceUiState<List<ResponseUser>>,
-    onLoginClicked: () -> Unit,
+    onLoginClicked: (String, String) -> Unit,
     onTextChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onCheckedChange: (Boolean) -> Unit
 ){
-
     val colors = getColorsTheme()
 
-    when (uiState) {
-        is ResourceUiState.Loading -> {
-            println("Cargando")
-        }
-        is ResourceUiState.Success -> {
-            val userList = uiState.data
-            // Aquí puedes imprimir en el logcat la respuesta del servidor
-            println("Respuesta del servidor: $userList")
-        }
-        is ResourceUiState.Error -> {
-            println("Error: ${uiState.message}")
-        }
-    }
+
+    var usuario by remember { mutableStateOf("") }
+    var contrasena by remember { mutableStateOf("") }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -69,9 +62,9 @@ fun LoginScreen(
                 labelValue = "Correo Institucional",
                 painterResource = UtilsIcons.MESSAGE.icon,
                 onTextChanged = {
-                    // Maneja el cambio de texto aquí
-                },
-                errorStatus = true // Ajusta esto según sea necesario
+                    usuario = it
+                    onTextChanged(it)
+                }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -80,7 +73,8 @@ fun LoginScreen(
                 labelValue = "CONTRASEÑA",
                 painterResource = UtilsIcons.PASSWORD.icon,
                 onTextSelected = {
-                    // Maneja la selección de texto aquí
+                    contrasena = it
+                    onPasswordChanged(it)
                 }
             )
 
@@ -88,19 +82,18 @@ fun LoginScreen(
 
             CheckboxComponent(
                 value = "Recordarme",
-                onTextSelected = {
-                    // Maneja la selección de texto aquí
-                },
-                onCheckedChange = {
-                    // Maneja el cambio de estado aquí
-                }
+                onTextSelected = onTextChanged,
+                onCheckedChange = onCheckedChange
             )
 
             Spacer(modifier = Modifier.height(30.dp))
 
             ButtonComponent(
                 value = "Ingresar",
-                onButtonClicked = onLoginClicked
+                onButtonClicked = {
+                    onLoginClicked.invoke(usuario,contrasena)
+                    println(uiState)
+                }
             )
 
             Spacer(modifier = Modifier.height(20.dp))

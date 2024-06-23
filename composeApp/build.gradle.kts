@@ -37,13 +37,13 @@ kotlin {
             implementation(libs.androidx.activity.compose)
 
             //koin
-            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
-            implementation("io.insert-koin:koin-core")
-            implementation("io.insert-koin:koin-android")
+//            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
+//            implementation("io.insert-koin:koin-core")
+//            implementation("io.insert-koin:koin-android")
 
             //ktor
             implementation(libs.ktor.client.okhttp)
-           // implementation("io.ktor:ktor-client-cio:2.3.0")
+            implementation("io.ktor:ktor-client-cio:2.3.0")
             implementation(libs.kotlinx.coroutines.android)
         }
         commonMain.dependencies {
@@ -63,14 +63,14 @@ kotlin {
 
 
             //Koin Common
-            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
-            implementation("io.insert-koin:koin-core")
-            implementation("io.insert-koin:koin-compose")
-            api("moe.tlaster:precompose-koin:1.5.10")
+//            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
+//            implementation("io.insert-koin:koin-core")
+//            implementation("io.insert-koin:koin-compose")
+//            api("moe.tlaster:precompose-koin:1.5.10")
 
             //ktor
             implementation(libs.ktor.client.core)
-            //implementation("io.ktor:ktor-client-cio:2.3.0")
+           implementation("io.ktor:ktor-client-cio:2.3.0")
             implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.ktor.serialization)
