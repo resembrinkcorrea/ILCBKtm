@@ -5,7 +5,7 @@ import domain.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import model.ResponseUser
+
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
@@ -17,7 +17,7 @@ sealed class ResourceUiState<out T> {
 
 class UserViewModel(private val repo: Repository) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<ResourceUiState<List<ResponseUser>>>(ResourceUiState.Loading)
+    private val _uiState = MutableStateFlow<ResourceUiState<List<RepoImpl.ResponseData>>>(ResourceUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     private lateinit var userRequest: UserRequest
@@ -27,16 +27,14 @@ class UserViewModel(private val repo: Repository) : ViewModel() {
         contrasena: String,
         uneg: Int,
         tipo_conexion: String,
-        ip_conexion: String,
-        sistema: String
+        ip_conexion: String
     ) {
         userRequest = UserRequest(
             usuario = usuario,
             contrasena = contrasena,
             uneg = uneg,
             tipo_conexion = tipo_conexion,
-            ip_conexion = ip_conexion,
-            sistema = sistema
+            ip_conexion = ip_conexion
         )
 
         getUserList()

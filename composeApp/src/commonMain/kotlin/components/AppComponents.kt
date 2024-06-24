@@ -17,9 +17,11 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -27,8 +29,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,106 +67,88 @@ fun MyTextFieldComponent(
     onTextChanged: (String) -> Unit,
     errorStatus: Boolean = false
 ) {
-    val textValue = remember { mutableStateOf("") }
-    val localFocusManager = LocalFocusManager.current
+    var textValue by remember { mutableStateOf("") }
 
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(componentShapes.small),
+            .clip(RoundedCornerShape(8.dp)),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Primary,
-            focusedLabelColor = Primary,
-            cursorColor = Primary,
-            backgroundColor = BgColor
+            focusedBorderColor = colors.primary, // Define tus colores aquí
+            unfocusedBorderColor = colors.onSurface.copy(alpha = ContentAlpha.disabled),
+            focusedLabelColor = colors.primary,
+            cursorColor = colors.primary,
+            backgroundColor = colors.surface
         ),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
         singleLine = true,
         maxLines = 1,
-        value = textValue.value,
+        value = textValue,
         onValueChange = {
-            textValue.value = it
+            textValue = it
             onTextChanged(it)
         },
         leadingIcon = {
-            Icon(imageVector = painterResource, contentDescription = "")
+            Icon(painterResource, contentDescription = "")
         },
-        isError = !errorStatus
+        isError = errorStatus
     )
 }
 
 
+
 @Composable
 fun PasswordTextFieldComponent(
-    labelValue: String, painterResource: ImageVector,
+    labelValue: String,
+    painterResource: ImageVector,
     onTextSelected: (String) -> Unit,
     errorStatus: Boolean = false
 ) {
-
-    val localFocusManager = LocalFocusManager.current
-    val password = remember {
-        mutableStateOf("")
-    }
-
-    val passwordVisible = remember {
-        mutableStateOf(false)
-    }
+    var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(componentShapes.small),
+            .clip(RoundedCornerShape(8.dp)),
         label = { Text(text = labelValue) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Primary,
-            focusedLabelColor = Primary,
-            cursorColor = Primary,
-            backgroundColor = BgColor
+            focusedBorderColor = colors.primary,
+            unfocusedBorderColor = colors.onSurface.copy(alpha = ContentAlpha.disabled),
+            focusedLabelColor = colors.primary,
+            cursorColor = colors.primary,
+            backgroundColor = colors.surface
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
         ),
         singleLine = true,
-        keyboardActions = KeyboardActions {
-            localFocusManager.clearFocus()
-        },
-        maxLines = 1,
-        value = password.value,
+        value = password,
         onValueChange = {
-            password.value = it
+            password = it
             onTextSelected(it)
         },
         leadingIcon = {
-            Icon(imageVector = painterResource, contentDescription = "")
+            Icon(painterResource, contentDescription = "")
         },
         trailingIcon = {
-
-            val iconImage = if (passwordVisible.value) {
-                Icons.Filled.Visibility
-            } else {
-                Icons.Filled.VisibilityOff
+            IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                Icon(
+                    imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                    contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
+                )
             }
-
-            val description = if (passwordVisible.value) {
-               "Hide Password"
-            } else {
-               "Show Password"
-            }
-
-            IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                Icon(imageVector = iconImage, contentDescription = description)
-            }
-
         },
-        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         isError = errorStatus
     )
 }
 
+
 @Composable
-fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boolean = false) {
+fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boolean = true) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -191,9 +177,7 @@ fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boole
                 color = Color.White,
                 fontWeight = FontWeight.Bold
             )
-
         }
-
     }
 }
 

@@ -1,10 +1,18 @@
 package ui
 
+import RepoImpl
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,16 +20,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import components.ButtonComponent
-import components.CheckboxComponent
 import components.MyTextFieldComponent
 import components.PasswordTextFieldComponent
 import getColorsTheme
 import ilcbktm.composeapp.generated.resources.Res
 import ilcbktm.composeapp.generated.resources.logoilcb
 import ilcbktm.composeapp.generated.resources.microsoft
-import model.ResponseUser
 import model.UtilsIcons
 import org.jetbrains.compose.resources.painterResource
 import presentacion.ResourceUiState
@@ -29,17 +38,13 @@ import presentacion.ResourceUiState
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LoginScreen(
-    uiState: ResourceUiState<List<ResponseUser>>,
-    onLoginClicked: (String, String) -> Unit,
-    onTextChanged: (String) -> Unit,
-    onPasswordChanged: (String) -> Unit,
-    onCheckedChange: (Boolean) -> Unit
+    uiState: ResourceUiState<List<RepoImpl.ResponseData>>,
+    onLoginClicked: (String, String) -> Unit
 ){
     val colors = getColorsTheme()
 
-
-    var usuario by remember { mutableStateOf("") }
-    var contrasena by remember { mutableStateOf("") }
+    var usuarioState by remember { mutableStateOf("") }
+    var contrasenaState by remember { mutableStateOf("") }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -51,6 +56,8 @@ fun LoginScreen(
                 .padding(30.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+
             Image(
                 painter = painterResource(Res.drawable.logoilcb), contentDescription = "",
                 modifier = Modifier.size(270.dp)
@@ -62,8 +69,7 @@ fun LoginScreen(
                 labelValue = "Correo Institucional",
                 painterResource = UtilsIcons.MESSAGE.icon,
                 onTextChanged = {
-                    usuario = it
-                    onTextChanged(it)
+                    usuarioState = it
                 }
             )
 
@@ -73,35 +79,60 @@ fun LoginScreen(
                 labelValue = "CONTRASEÑA",
                 painterResource = UtilsIcons.PASSWORD.icon,
                 onTextSelected = {
-                    contrasena = it
-                    onPasswordChanged(it)
+                    contrasenaState = it
                 }
             )
 
+
             Spacer(modifier = Modifier.height(20.dp))
 
-            CheckboxComponent(
-                value = "Recordarme",
-                onTextSelected = onTextChanged,
-                onCheckedChange = onCheckedChange
-            )
-
-            Spacer(modifier = Modifier.height(30.dp))
+         //   Spacer(modifier = Modifier.height(30.dp))
 
             ButtonComponent(
                 value = "Ingresar",
                 onButtonClicked = {
-                    onLoginClicked.invoke(usuario,contrasena)
-                    println(uiState)
+                    onLoginClicked.invoke(usuarioState,contrasenaState)
+                    usuarioState = ""
+                    contrasenaState = ""
                 }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Image(
-                painter = painterResource(Res.drawable.microsoft), contentDescription = "",
-                modifier = Modifier.size(200.dp)
-            )
+//            Image(
+//                painter = painterResource(Res.drawable.microsoft), contentDescription = "",
+//                modifier = Modifier.size(200.dp)
+//            )
+
+            when (val currentState = uiState) {
+                is ResourceUiState.Success -> {
+
+                    val responseData = (currentState as ResourceUiState.Success<List<RepoImpl.ResponseData>>).data
+                    val firstMenu = responseData.firstOrNull()?.data_menu?.getOrNull(0)
+                    val colaborador = responseData.firstOrNull()?.data_colaborador?.getOrNull(0)
+
+                    println(colaborador?.empl_url_foto)
+
+                    Text(
+                        text = "${colaborador?.pers_nombre}  ${colaborador?.perf_nombre}",
+                        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                        modifier = Modifier.padding(16.dp)
+                    )
+
+                }
+                is ResourceUiState.Error -> {
+                    val errorMessage = (uiState as ResourceUiState.Error).message
+                    Text(
+                        text = "Error: $errorMessage",
+                        style = MaterialTheme.typography.body1,
+                        color = colors.textColor
+                    )
+                }
+                else -> {
+                    // Puedes manejar otros estados como Loading aquí si es necesario
+                }
+            }
+
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Apps
+import androidx.compose.material.icons.filled.Dehaze
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -35,7 +36,7 @@ fun App() {
                             elevation = 0.dp,
                             title = {
                                 Text(
-                                    text = "Inicio",
+                                    text = "ILCB",
                                     fontSize = 25.sp,
                                     color = colors.textColor
                                 )
@@ -43,7 +44,7 @@ fun App() {
                             navigationIcon = {
                                     Icon(
                                         modifier = Modifier.padding(start = 16.dp),
-                                        imageVector = Icons.Default.Apps,
+                                        imageVector = Icons.Default.Dehaze,
                                         tint = colors.textColor,
                                         contentDescription = "Dashboard back"
 

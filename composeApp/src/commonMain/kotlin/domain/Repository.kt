@@ -1,8 +1,9 @@
 package domain
 
-import model.ResponseUser
+
 import data.UserRequest
+import io.ktor.http.cio.Response
 
 interface Repository {
-    suspend fun getDataUsuario(userRequest: UserRequest):List<ResponseUser>
+    suspend fun getDataUsuario(userRequest: UserRequest):List<RepoImpl.ResponseData>
 }
