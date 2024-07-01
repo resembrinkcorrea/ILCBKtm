@@ -26,6 +26,8 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import ui.HomeScreen
+import ui.OnBoardingScreen
 
 @Composable
 fun Navigation(navigator: Navigator) {
@@ -44,25 +46,31 @@ fun Navigation(navigator: Navigator) {
         UserViewModel(RepoImpl(httpClient))
     }
 
-
     var uneg by remember { mutableStateOf(2) }
     var tipoConexion by remember { mutableStateOf("app movil colaborador") }
     var ipConexion by remember { mutableStateOf("200.123.1.66") }
 
-
     NavHost(
         modifier = Modifier.background(colors.backGroundColor),
         navigator = navigator,
-        initialRoute = "/login"
+        initialRoute = "/onboarding"
     ) {
+        scene(route = "/onboarding") {
+            OnBoardingScreen(navigator = navigator)
+        }
         scene(route = "/login") {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             LoginScreen(
                 uiState = uiState,
                 onLoginClicked = { usr, pwd ->
                     viewModel.setUsuarioRequest(usr, pwd, uneg, tipoConexion, ipConexion)
-                }
+                },
+                navigator = navigator
             )
+        }
+
+        scene(route = "/homeScreen") {
+            HomeScreen(navigator = navigator)
         }
     }
 }

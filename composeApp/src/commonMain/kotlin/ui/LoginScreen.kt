@@ -1,6 +1,7 @@
 package ui
 
 import RepoImpl
+import ResponseData
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -32,14 +33,16 @@ import ilcbktm.composeapp.generated.resources.Res
 import ilcbktm.composeapp.generated.resources.logoilcb
 import ilcbktm.composeapp.generated.resources.microsoft
 import model.UtilsIcons
+import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.painterResource
 import presentacion.ResourceUiState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LoginScreen(
-    uiState: ResourceUiState<List<RepoImpl.ResponseData>>,
-    onLoginClicked: (String, String) -> Unit
+    uiState: ResourceUiState<List<ResponseData>>,
+    onLoginClicked: (String, String) -> Unit,
+    navigator:Navigator
 ){
     val colors = getColorsTheme()
 
@@ -84,44 +87,43 @@ fun LoginScreen(
             )
 
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-         //   Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(60.dp))
 
             ButtonComponent(
                 value = "Ingresar",
                 onButtonClicked = {
                     onLoginClicked.invoke(usuarioState,contrasenaState)
-                    usuarioState = ""
-                    contrasenaState = ""
                 }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
-//            Image(
-//                painter = painterResource(Res.drawable.microsoft), contentDescription = "",
-//                modifier = Modifier.size(200.dp)
-//            )
+            Image(
+                painter = painterResource(Res.drawable.microsoft), contentDescription = "",
+                modifier = Modifier.size(150.dp)
+            )
 
-            when (val currentState = uiState) {
+            when (uiState) {
+
                 is ResourceUiState.Success -> {
 
-                    val responseData = (currentState as ResourceUiState.Success<List<RepoImpl.ResponseData>>).data
+                    val responseData = uiState.data
                     val firstMenu = responseData.firstOrNull()?.data_menu?.getOrNull(0)
                     val colaborador = responseData.firstOrNull()?.data_colaborador?.getOrNull(0)
 
-                    println(colaborador?.empl_url_foto)
+                   // println(colaborador?.empl_url_foto)
+                    print(responseData)
 
                     Text(
                         text = "${colaborador?.pers_nombre}  ${colaborador?.perf_nombre}",
                         style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                         modifier = Modifier.padding(16.dp)
                     )
+                   // navigator.navigate("/homeScreen")
 
                 }
                 is ResourceUiState.Error -> {
-                    val errorMessage = (uiState as ResourceUiState.Error).message
+                    val errorMessage = uiState.message
                     Text(
                         text = "Error: $errorMessage",
                         style = MaterialTheme.typography.body1,

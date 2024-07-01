@@ -30,38 +30,10 @@ fun App() {
                 val navigator = rememberNavigator()
 
                 Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        TopAppBar(
-                            elevation = 0.dp,
-                            title = {
-                                Text(
-                                    text = "ILCB",
-                                    fontSize = 25.sp,
-                                    color = colors.textColor
-                                )
-                            },
-                            navigationIcon = {
-                                    Icon(
-                                        modifier = Modifier.padding(start = 16.dp),
-                                        imageVector = Icons.Default.Dehaze,
-                                        tint = colors.textColor,
-                                        contentDescription = "Dashboard back"
-
-                                    )
-                            }, backgroundColor = colors.backGroundColor
-                        )
-                    },
-
-
-
-
+                    modifier = Modifier.fillMaxSize()
                 ) {
-
                     Navigation(navigator)
                 }
-
-
             }
         }
 
