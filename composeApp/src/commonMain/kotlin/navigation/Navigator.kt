@@ -3,6 +3,7 @@ package navigation
 import RepoImpl
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +27,7 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import presentacion.UserCorreoViewModel
 import ui.HomeScreen
 import ui.OnBoardingScreen
 
@@ -46,6 +48,10 @@ fun Navigation(navigator: Navigator) {
         UserViewModel(RepoImpl(httpClient))
     }
 
+    val viewModelCorreo: UserCorreoViewModel = viewModel(modelClass = UserCorreoViewModel::class) {
+        UserCorreoViewModel(RepoImpl(httpClient))
+    }
+    var usuario = "steven.placencia@cordonbleu.edu.pe"
     var uneg by remember { mutableStateOf(2) }
     var tipoConexion by remember { mutableStateOf("app movil colaborador") }
     var ipConexion by remember { mutableStateOf("200.123.1.66") }
@@ -63,14 +69,21 @@ fun Navigation(navigator: Navigator) {
             LoginScreen(
                 uiState = uiState,
                 onLoginClicked = { usr, pwd ->
-                    viewModel.setUsuarioRequest(usr, pwd, uneg, tipoConexion, ipConexion)
+                    viewModel.setUsuarioRequest(usuario, pwd, uneg, tipoConexion, ipConexion)
                 },
                 navigator = navigator
             )
         }
 
         scene(route = "/homeScreen") {
-            HomeScreen(navigator = navigator)
+            val uiState by viewModelCorreo.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModelCorreo.setUsuarioRequest(usuario, uneg, tipoConexion, ipConexion)
+            }
+            HomeScreen(
+                uiState = uiState,
+             navigator = navigator)
         }
     }
 }

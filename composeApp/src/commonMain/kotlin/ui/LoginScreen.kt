@@ -35,7 +35,7 @@ import ilcbktm.composeapp.generated.resources.microsoft
 import model.UtilsIcons
 import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.painterResource
-import presentacion.ResourceUiState
+import vo.ResourceUiState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -114,12 +114,12 @@ fun LoginScreen(
                    // println(colaborador?.empl_url_foto)
                     print(responseData)
 
-                    Text(
-                        text = "${colaborador?.pers_nombre}  ${colaborador?.perf_nombre}",
-                        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(16.dp)
-                    )
-                   // navigator.navigate("/homeScreen")
+//                    Text(
+//                        text = "${colaborador?.pers_nombre}  ${colaborador?.perf_nombre}",
+//                        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+//                        modifier = Modifier.padding(16.dp)
+//                    )
+                    navigator.navigate("/homeScreen")
 
                 }
                 is ResourceUiState.Error -> {

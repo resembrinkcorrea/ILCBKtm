@@ -1,4 +1,5 @@
 import data.UserRequest
+import data.UserRequestCorreo
 import domain.Repository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -9,7 +10,8 @@ import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
 
 private const val BASE_URL =
-    "http://sslcbpopen.eastus2.cloudapp.azure.com:8080/saa-rest/webresources/intranetSAA"
+   "http://sslcbpopen.eastus2.cloudapp.azure.com:8080/saa-rest/webresources/intranetSAA"
+//"http://74.249.92.43:8080/saa-rest/webresources/intranetSAA/"
 
 class RepoImpl(private val httpClient: HttpClient) : Repository {
 
@@ -23,6 +25,25 @@ class RepoImpl(private val httpClient: HttpClient) : Repository {
             contentType(ContentType.Application.Json)
             setBody(
                 userRequest
+            )
+        }
+
+        return try {
+            val responseBody = response.body<String>()
+            val networkResponse = json.decodeFromString<ResponseData>(responseBody)
+            return listOf(networkResponse)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
+    override suspend fun getDataUsuarioCorreo(userRequestCorreo: UserRequestCorreo): List<ResponseData> {
+        val response = httpClient.post("$BASE_URL/logueoCorreoColaborador") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                userRequestCorreo
             )
         }
 
