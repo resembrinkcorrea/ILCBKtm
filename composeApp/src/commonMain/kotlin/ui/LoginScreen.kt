@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import components.ButtonComponent
+import components.CheckboxComponent
 import components.MyTextFieldComponent
 import components.PasswordTextFieldComponent
 import getColorsTheme
@@ -48,6 +49,7 @@ fun LoginScreen(
 
     var usuarioState by remember { mutableStateOf("") }
     var contrasenaState by remember { mutableStateOf("") }
+    var rememberMe by remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -86,8 +88,18 @@ fun LoginScreen(
                 }
             )
 
+            Spacer(modifier = Modifier.height(10.dp))
 
-            Spacer(modifier = Modifier.height(60.dp))
+            CheckboxComponent(
+                value = "Recordar sesión",
+                onTextSelected = { /* Acción al seleccionar el texto */ },
+                onCheckedChange = { isChecked ->
+                    rememberMe = isChecked
+                    // Aquí puedes realizar acciones adicionales al cambiar el estado del checkbox
+                }
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
 
             ButtonComponent(
                 value = "Ingresar",
@@ -95,6 +107,8 @@ fun LoginScreen(
                     onLoginClicked.invoke(usuarioState,contrasenaState)
                 }
             )
+
+
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -119,7 +133,7 @@ fun LoginScreen(
                         style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                         modifier = Modifier.padding(16.dp)
                     )
-                   // navigator.navigate("/homeScreen")
+                    navigator.navigate("/homeScreen")
 
                 }
                 is ResourceUiState.Error -> {

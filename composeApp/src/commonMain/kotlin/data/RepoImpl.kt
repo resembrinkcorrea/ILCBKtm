@@ -1,4 +1,5 @@
 import data.UserRequest
+import data.UsuarioCorreoRequest
 import domain.Repository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -23,6 +24,25 @@ class RepoImpl(private val httpClient: HttpClient) : Repository {
             contentType(ContentType.Application.Json)
             setBody(
                 userRequest
+            )
+        }
+
+        return try {
+            val responseBody = response.body<String>()
+            val networkResponse = json.decodeFromString<ResponseData>(responseBody)
+            return listOf(networkResponse)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
+    override suspend fun getDataUsuarioCorreo(userRequestCorreo: UsuarioCorreoRequest): List<ResponseData> {
+        val response = httpClient.post("$BASE_URL/logueoCorreoColaborador") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                userRequestCorreo
             )
         }
 

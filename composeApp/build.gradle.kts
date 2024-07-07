@@ -35,6 +35,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.coil.compose)
 
             //koin
 //            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
@@ -58,6 +59,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.coil.compose)
             api(compose.materialIconsExtended)
 
             //Navigatio Pre Compose
@@ -84,10 +86,13 @@ kotlin {
 
             implementation(libs.ktor.serialization)
             implementation(libs.ktor.content.negotiation)
+
+
         }
 
         commonMain.dependencies {
             implementation(compose.components.resources)
+
         }
 
         iosMain.dependencies {
@@ -95,6 +100,9 @@ kotlin {
 
             //ktor
             implementation(libs.ktor.client.darwin)
+
+            //
+            implementation(libs.coil.compose)
         }
 
     }
