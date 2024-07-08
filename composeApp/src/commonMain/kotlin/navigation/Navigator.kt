@@ -28,12 +28,13 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import presentacion.UserCorreoViewModel
+import presentacion.UsuarioCorreoViewModel
 import ui.HomeScreen
 import ui.OnBoardingScreen
+import ui.QrScreen
 
 @Composable
 fun Navigation(navigator: Navigator) {
-
     val colors = getColorsTheme()
     val httpClient = remember { HttpClient(CIO) {
         install(ContentNegotiation) {
@@ -48,13 +49,17 @@ fun Navigation(navigator: Navigator) {
         UserViewModel(RepoImpl(httpClient))
     }
 
-    val viewModelCorreo: UserCorreoViewModel = viewModel(modelClass = UserCorreoViewModel::class) {
-        UserCorreoViewModel(RepoImpl(httpClient))
+    val viewModelCorreo: UsuarioCorreoViewModel = viewModel(modelClass = UsuarioCorreoViewModel::class) {
+        UsuarioCorreoViewModel(RepoImpl(httpClient))
     }
     var usuario = "steven.placencia@cordonbleu.edu.pe"
     var uneg by remember { mutableStateOf(2) }
     var tipoConexion by remember { mutableStateOf("app movil colaborador") }
     var ipConexion by remember { mutableStateOf("200.123.1.66") }
+
+//    BackHandler(onBack = {
+//        navigator.goBack()
+//    })
 
     NavHost(
         modifier = Modifier.background(colors.backGroundColor),
@@ -69,7 +74,7 @@ fun Navigation(navigator: Navigator) {
             LoginScreen(
                 uiState = uiState,
                 onLoginClicked = { usr, pwd ->
-                    viewModel.setUsuarioRequest(usuario, pwd, uneg, tipoConexion, ipConexion)
+                    viewModel.setUsuarioRequest(usr, pwd, uneg, tipoConexion, ipConexion)
                 },
                 navigator = navigator
             )
@@ -77,14 +82,20 @@ fun Navigation(navigator: Navigator) {
 
         scene(route = "/homeScreen") {
             val uiState by viewModelCorreo.uiState.collectAsStateWithLifecycle()
-
             LaunchedEffect(Unit) {
                 viewModelCorreo.setUsuarioRequest(usuario, uneg, tipoConexion, ipConexion)
             }
             HomeScreen(
                 uiState = uiState,
-             navigator = navigator)
+                navigator = navigator
+            )
         }
+
+        scene(route = "/qrScreen") {
+            QrScreen(navigator = navigator)
+        }
+
+        // Agrega otras escenas según sea necesario
     }
 }
 

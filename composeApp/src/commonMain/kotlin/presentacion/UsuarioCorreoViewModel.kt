@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
+import vo.ResourceUiState
 
 class UsuarioCorreoViewModel(private val repo: Repository) : ViewModel() {
 

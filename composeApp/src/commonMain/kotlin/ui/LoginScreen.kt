@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import components.ButtonComponent
+import components.CheckboxComponent
 import components.MyTextFieldComponent
 import components.PasswordTextFieldComponent
 import getColorsTheme
@@ -86,8 +87,19 @@ fun LoginScreen(
                 }
             )
 
+            Spacer(modifier = Modifier.height(20.dp))
 
-            Spacer(modifier = Modifier.height(60.dp))
+            CheckboxComponent(
+                value = "Recordarme",
+                onTextSelected = {
+
+                },
+                onCheckedChange = {
+
+                }
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
 
             ButtonComponent(
                 value = "Ingresar",

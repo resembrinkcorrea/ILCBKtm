@@ -3,6 +3,7 @@ package presentacion
 import ResponseData
 import data.UserRequest
 import data.UserRequestCorreo
+import data.UsuarioCorreoRequest
 import domain.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +17,7 @@ class UserCorreoViewModel(private val repo: Repository) : ViewModel() {
     private val _uiState = MutableStateFlow<ResourceUiState<List<ResponseData>>>(ResourceUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private lateinit var userRequest: UserRequestCorreo
+    private lateinit var userRequest: UsuarioCorreoRequest
 
     fun setUsuarioRequest(
         usuario: String,
@@ -24,7 +25,7 @@ class UserCorreoViewModel(private val repo: Repository) : ViewModel() {
         tipo_conexion: String,
         ip_conexion: String
     ) {
-        userRequest = UserRequestCorreo(
+        userRequest = UsuarioCorreoRequest(
             usuario = usuario,
             id_uneg = id_uneg,
             tipo_conexion = tipo_conexion,
