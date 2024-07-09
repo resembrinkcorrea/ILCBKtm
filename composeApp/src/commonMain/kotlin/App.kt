@@ -15,6 +15,7 @@ import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.navigation.rememberNavigator
 import navigation.Navigation
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.KoinContext
 import themeapp.getColorsTheme
 
 @Composable
@@ -23,6 +24,8 @@ fun App() {
 
 
     PreComposeApp {
+
+        KoinContext {
             val colors = getColorsTheme()
 
             AppTheme {
@@ -36,7 +39,7 @@ fun App() {
                 }
             }
         }
-
+    }
 
 }
 

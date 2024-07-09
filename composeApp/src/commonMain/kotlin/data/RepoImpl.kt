@@ -1,3 +1,4 @@
+import data.QrEntity
 import data.UserRequest
 import data.UserRequestCorreo
 import data.UsuarioCorreoRequest
@@ -9,8 +10,9 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.json.Json
+import model.ResponseQr
 
-private const val BASE_URL =
+ const val BASE_URL =
    "http://sslcbpopen.eastus2.cloudapp.azure.com:8080/saa-rest/webresources/intranetSAA"
 //"http://74.249.92.43:8080/saa-rest/webresources/intranetSAA/"
 

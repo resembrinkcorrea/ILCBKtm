@@ -53,7 +53,7 @@ fun Carousel(onFinished: () -> Unit) {
                         .padding(horizontal = 4.dp)
                         .size(12.dp)
                         .background(
-                            color = if (index == currentIndex) Color.White else Color.Gray,
+                            color = if (index == currentIndex) Color.Gray else Color.DarkGray,
                             shape = CircleShape
                         )
                 )

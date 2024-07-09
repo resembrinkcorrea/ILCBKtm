@@ -152,7 +152,7 @@ fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boole
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(48.dp),
+            .heightIn(40.dp),
         onClick = {
             onButtonClicked.invoke()
         },
@@ -164,7 +164,7 @@ fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boole
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(48.dp)
+                .heightIn(40.dp)
                 .background(
                     brush = Brush.horizontalGradient(listOf(Primary, Secondary)),
                     shape = RoundedCornerShape(50.dp)

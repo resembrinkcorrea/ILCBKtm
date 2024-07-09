@@ -14,11 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import getColorsTheme
+import model.ResponseQr
 import moe.tlaster.precompose.navigation.Navigator
+import vo.ResourceUiState
 
 @Composable
-fun QrScreen(
-    navigator: Navigator
+fun QrScreen(uiState: ResourceUiState<List<ResponseQr>>,
+             onLoginClicked: (Int) -> Unit,
+             navigator:Navigator
 ) {
     val colors = getColorsTheme()
 

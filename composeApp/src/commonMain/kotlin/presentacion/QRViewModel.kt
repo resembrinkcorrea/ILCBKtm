@@ -1,43 +1,38 @@
 package presentacion
 
 import ResponseData
-import data.UserRequest
-import data.UserRequestCorreo
+import data.QrEntity
 import data.UsuarioCorreoRequest
 import domain.Repository
+import domain.RepositoryKoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import model.DataQr
+import model.ResponseQr
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 import vo.ResourceUiState
 
-class UserCorreoViewModel(private val repo: Repository) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<ResourceUiState<List<ResponseData>>>(ResourceUiState.Loading)
+class QrViewModel(private val repo: RepositoryKoin) : ViewModel() {
+
+    private val _uiState = MutableStateFlow<ResourceUiState<List<ResponseQr>>>(ResourceUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private lateinit var userRequest: UsuarioCorreoRequest
+    private lateinit var userQrRequest: QrEntity
 
-    fun setUsuarioRequest(
-        usuario: String,
-        id_uneg: Int,
-        tipo_conexion: String,
-        ip_conexion: String
-    ) {
-        userRequest = UsuarioCorreoRequest(
-            usuario = usuario,
-            id_uneg = id_uneg,
-            tipo_conexion = tipo_conexion,
-            ip_conexion = ip_conexion
-        )
-        getUserList()
+    fun setQRequest(id_pers_det: Int) {
+        userQrRequest = QrEntity( id_pers_det = id_pers_det)
+        getQrUsuarioData()
     }
 
-    fun getUserList() {
+
+    fun getQrUsuarioData() {
         viewModelScope.launch {
             try {
-                val users = repo.getDataUsuarioCorreo(userRequest)
+                val users = repo.getQrUsuario(userQrRequest)
                 if (users.isEmpty()) {
                     _uiState.value = ResourceUiState.Error("Usuario incorrecto")
                 } else {
@@ -53,4 +48,5 @@ class UserCorreoViewModel(private val repo: Repository) : ViewModel() {
             }
         }
     }
+
 }

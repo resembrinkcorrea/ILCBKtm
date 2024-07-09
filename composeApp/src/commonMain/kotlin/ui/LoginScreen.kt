@@ -25,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.russhwolf.settings.Settings
 import components.ButtonComponent
 import components.CheckboxComponent
 import components.MyTextFieldComponent
@@ -38,6 +39,8 @@ import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.painterResource
 import vo.ResourceUiState
 
+
+private val settings:Settings = Settings()
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LoginScreen(
@@ -49,6 +52,8 @@ fun LoginScreen(
 
     var usuarioState by remember { mutableStateOf("") }
     var contrasenaState by remember { mutableStateOf("") }
+    var rememberMeState by remember { mutableStateOf(false) }
+
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -60,7 +65,6 @@ fun LoginScreen(
                 .padding(30.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
 
             Image(
                 painter = painterResource(Res.drawable.logoilcb), contentDescription = "",
@@ -94,12 +98,13 @@ fun LoginScreen(
                 onTextSelected = {
 
                 },
-                onCheckedChange = {
-
+                onCheckedChange = {isChecked ->
+                    rememberMeState = isChecked
+                    settings.putInt("Session", if(isChecked) 1 else -1)
                 }
             )
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             ButtonComponent(
                 value = "Ingresar",

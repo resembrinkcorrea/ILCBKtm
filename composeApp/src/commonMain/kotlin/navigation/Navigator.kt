@@ -21,13 +21,11 @@ import ui.LoginScreen
 
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.*
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import presentacion.UserCorreoViewModel
+import moe.tlaster.precompose.koin.koinViewModel
+import org.koin.core.parameter.parametersOf
+import presentacion.QrViewModel
 import presentacion.UsuarioCorreoViewModel
 import ui.HomeScreen
 import ui.OnBoardingScreen
@@ -48,10 +46,14 @@ fun Navigation(navigator: Navigator) {
     val viewModel: UserViewModel = viewModel(modelClass = UserViewModel::class) {
         UserViewModel(RepoImpl(httpClient))
     }
-
     val viewModelCorreo: UsuarioCorreoViewModel = viewModel(modelClass = UsuarioCorreoViewModel::class) {
         UsuarioCorreoViewModel(RepoImpl(httpClient))
     }
+
+    val viewModelQr = koinViewModel(QrViewModel::class) {
+        parametersOf()
+    }
+
     var usuario = "steven.placencia@cordonbleu.edu.pe"
     var uneg by remember { mutableStateOf(2) }
     var tipoConexion by remember { mutableStateOf("app movil colaborador") }
@@ -60,6 +62,7 @@ fun Navigation(navigator: Navigator) {
 //    BackHandler(onBack = {
 //        navigator.goBack()
 //    })
+
 
     NavHost(
         modifier = Modifier.background(colors.backGroundColor),
@@ -92,7 +95,14 @@ fun Navigation(navigator: Navigator) {
         }
 
         scene(route = "/qrScreen") {
-            QrScreen(navigator = navigator)
+            val uiState by viewModelQr.uiState.collectAsStateWithLifecycle()
+            QrScreen(
+                uiState = uiState,
+                onLoginClicked = { idPersDet ->
+                    viewModelQr.setQRequest(idPersDet)
+                },
+                navigator = navigator
+            )
         }
 
         // Agrega otras escenas según sea necesario

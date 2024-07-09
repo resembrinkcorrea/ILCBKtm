@@ -38,9 +38,9 @@ kotlin {
             implementation(libs.coil.compose)
 
             //koin
-//            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
-//            implementation("io.insert-koin:koin-core")
-//            implementation("io.insert-koin:koin-android")
+            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
+            implementation("io.insert-koin:koin-core")
+            implementation("io.insert-koin:koin-android")
 
             //ktor
             implementation(libs.ktor.client.okhttp)
@@ -61,9 +61,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
+            implementation(libs.settings)
             api(compose.materialIconsExtended)
 
-            //Navigatio Pre Compose
+            //Navigation Pre Compose
             api("moe.tlaster:precompose:1.5.10")
 
             //ViewModel
@@ -71,10 +72,10 @@ kotlin {
 
 
             //Koin Common
-//            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
-//            implementation("io.insert-koin:koin-core")
-//            implementation("io.insert-koin:koin-compose")
-//            api("moe.tlaster:precompose-koin:1.5.10")
+            implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))
+            implementation("io.insert-koin:koin-core")
+            implementation("io.insert-koin:koin-compose")
+            api("moe.tlaster:precompose-koin:1.5.10")
 
             //ktor
             implementation(libs.ktor.client.core)
