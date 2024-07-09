@@ -1,29 +1,45 @@
 package ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import getColorsTheme
+import io.ktor.util.encodeBase64
 import model.ResponseQr
 import moe.tlaster.precompose.navigation.Navigator
+import qrgenerator.QRCodeImage
 import vo.ResourceUiState
+
+
 
 @Composable
 fun QrScreen(uiState: ResourceUiState<List<ResponseQr>>,
-             onLoginClicked: (Int) -> Unit,
              navigator:Navigator
 ) {
     val colors = getColorsTheme()
+
+    var qrCodeImage: ImageBitmap? by remember { mutableStateOf(null) }
+
 
     Column(
         modifier = Modifier
@@ -55,6 +71,51 @@ fun QrScreen(uiState: ResourceUiState<List<ResponseQr>>,
                 }
             },
             backgroundColor = colors.backGroundColor
+
+
         )
+
+        when (uiState) {
+
+            is ResourceUiState.Success -> {
+
+                val responseData = uiState.data
+                val dataQr = responseData.firstOrNull()?.data_qr?.getOrNull(0)
+
+                val qrBase64 = dataQr?.codigo_qr?.encodeBase64()
+
+                if (!qrBase64.isNullOrEmpty()) {
+                    val qrCodeImage = qrgenerator.generateCode(qrBase64)
+                    qrCodeImage?.let { imageBitmap ->
+                        Image(
+                            bitmap = imageBitmap,
+                            contentDescription = "QR Code",
+                            modifier = Modifier
+                                .size(300.dp)  // Tamaño deseado de la imagen
+                                .padding(vertical = 16.dp)
+                                .align(Alignment.CenterHorizontally)
+                        )
+                    }
+                } else {
+                    Text(
+                        text = "QR Code not available",
+                        style = MaterialTheme.typography.body1,
+                        color = colors.textColor
+                    )
+                }
+
+            }
+            is ResourceUiState.Error -> {
+                val errorMessage = uiState.message
+                Text(
+                    text = "Error: $errorMessage",
+                    style = MaterialTheme.typography.body1,
+                    color = colors.textColor
+                )
+            }
+            else -> {
+                // Puedes manejar otros estados como Loading aquí si es necesario
+            }
+        }
     }
 }

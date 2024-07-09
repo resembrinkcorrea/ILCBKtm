@@ -50,6 +50,8 @@ kotlin {
             implementation("io.ktor:ktor-client-logging:2.3.0")
             implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.3")
 
+
+
             implementation(libs.kotlinx.coroutines.android)
         }
         commonMain.dependencies {
@@ -70,6 +72,8 @@ kotlin {
             //ViewModel
             api("moe.tlaster:precompose-viewmodel:1.5.10")
 
+            //Qr
+            implementation(libs.qr.code)
 
             //Koin Common
             implementation(project.dependencies.platform("io.insert-koin:koin-bom:3.5.1"))

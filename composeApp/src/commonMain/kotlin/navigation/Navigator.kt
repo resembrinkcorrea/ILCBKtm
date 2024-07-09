@@ -54,10 +54,11 @@ fun Navigation(navigator: Navigator) {
         parametersOf()
     }
 
-    var usuario = "steven.placencia@cordonbleu.edu.pe"
+    var usuario = "resembrink.correa@cordonbleu.edu.pe"
     var uneg by remember { mutableStateOf(2) }
     var tipoConexion by remember { mutableStateOf("app movil colaborador") }
     var ipConexion by remember { mutableStateOf("200.123.1.66") }
+    var idPersDet = 92578
 
 //    BackHandler(onBack = {
 //        navigator.goBack()
@@ -96,11 +97,11 @@ fun Navigation(navigator: Navigator) {
 
         scene(route = "/qrScreen") {
             val uiState by viewModelQr.uiState.collectAsStateWithLifecycle()
+            LaunchedEffect(Unit) {
+                viewModelQr.setQRequest(idPersDet)
+            }
             QrScreen(
                 uiState = uiState,
-                onLoginClicked = { idPersDet ->
-                    viewModelQr.setQRequest(idPersDet)
-                },
                 navigator = navigator
             )
         }

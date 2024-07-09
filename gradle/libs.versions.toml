@@ -35,6 +35,8 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
 
+qr-code = { module = "network.chaintech:qr-kit", version = "1.0.6" }
+
 settings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "settings-multiplatform"}
 
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
