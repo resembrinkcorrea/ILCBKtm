@@ -38,8 +38,6 @@ fun QrScreen(uiState: ResourceUiState<List<ResponseQr>>,
 ) {
     val colors = getColorsTheme()
 
-    var qrCodeImage: ImageBitmap? by remember { mutableStateOf(null) }
-
 
     Column(
         modifier = Modifier
@@ -103,7 +101,6 @@ fun QrScreen(uiState: ResourceUiState<List<ResponseQr>>,
                         color = colors.textColor
                     )
                 }
-
             }
             is ResourceUiState.Error -> {
                 val errorMessage = uiState.message

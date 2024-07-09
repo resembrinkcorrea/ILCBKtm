@@ -50,7 +50,8 @@ kotlin {
             implementation("io.ktor:ktor-client-logging:2.3.0")
             implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.3")
 
-
+            //QR
+            implementation(libs.qr.code)
 
             implementation(libs.kotlinx.coroutines.android)
         }
@@ -58,10 +59,13 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
+            implementation(compose.material3)
+            implementation(compose.animation)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.coil.compose)
+            implementation(libs.androidx.navigation.compose)
             implementation(libs.coil.network)
             implementation(libs.settings)
             api(compose.materialIconsExtended)

@@ -17,33 +17,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
+
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.BlindsClosed
-import androidx.compose.material.icons.filled.ChevronLeft
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.CloseFullscreen
-import androidx.compose.material.icons.filled.ClosedCaption
-import androidx.compose.material.icons.filled.CurtainsClosed
 import androidx.compose.material.icons.filled.Dehaze
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.LockPerson
-import androidx.compose.material.icons.filled.PersonOutline
-import androidx.compose.material.icons.filled.PersonRemove
-import androidx.compose.material.icons.filled.PersonRemoveAlt1
-import androidx.compose.material.icons.filled.PersonalInjury
-import androidx.compose.material.icons.filled.Rectangle
-import androidx.compose.material.icons.filled.SquareFoot
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,10 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.russhwolf.settings.Settings
-import data.TitleTopBarTypes
 import data_menu
 import getColorsTheme
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import model.ColorIcons
 import moe.tlaster.precompose.navigation.Navigator
@@ -86,6 +69,8 @@ fun HomeScreen(
 
     val colors = getColorsTheme()
     var usuarioState by remember { mutableStateOf("") }
+    var photoUrl by remember { mutableStateOf("") }
+
 
     var sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
@@ -192,13 +177,13 @@ fun HomeScreen(
             is ResourceUiState.Success -> {
 
                 val responseData = uiState.data
-                print(responseData)
+                 photoUrl = responseData.firstOrNull()?.data_colaborador?.firstOrNull()?.empl_url_foto.toString()
 
                 LazyRow {
                     items(responseData) { responseDataItem ->
                         responseDataItem.data_menu.let { menuList ->
                             menuList.forEachIndexed { index, menu ->     //se puede usar un forEach es sin usar indice
-                                MenuItemCard(menu, index, navigator)
+                                MenuItemCard(menu, index, navigator,photoUrl)
                             }
                         }
                     }
@@ -222,7 +207,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun MenuItemCard(menu: data_menu, index: Int, navigator: Navigator) {
+fun MenuItemCard(menu: data_menu, index: Int, navigator: Navigator, photoUrl: String) {
     val colorIndex = index % ColorIcons.colors.size
 
 
