@@ -6,12 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
 import com.russhwolf.settings.Settings
-import moe.tlaster.precompose.navigation.Navigator
 
 private val settings: Settings = Settings()
 @Composable
-fun OnBoardingScreen(navigator: Navigator) {
+fun OnBoardingScreen(navigator: NavController) {
 
     var carouselFinished by remember { mutableStateOf(false) }
 

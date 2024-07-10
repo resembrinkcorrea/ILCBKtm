@@ -1,6 +1,5 @@
 package ui
 
-import RepoImpl
 import ResponseData
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -21,10 +20,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.russhwolf.settings.Settings
 import components.ButtonComponent
 import components.CheckboxComponent
@@ -35,7 +32,6 @@ import ilcbktm.composeapp.generated.resources.Res
 import ilcbktm.composeapp.generated.resources.logoilcb
 import ilcbktm.composeapp.generated.resources.microsoft
 import model.UtilsIcons
-import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.painterResource
 import vo.ResourceUiState
 
@@ -46,7 +42,7 @@ private val settings:Settings = Settings()
 fun LoginScreen(
     uiState: ResourceUiState<List<ResponseData>>,
     onLoginClicked: (String, String) -> Unit,
-    navigator:Navigator
+    navigator:NavController
 ){
     val colors = getColorsTheme()
 

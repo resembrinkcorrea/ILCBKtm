@@ -48,6 +48,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.russhwolf.settings.Settings
 import data_menu
@@ -65,7 +67,8 @@ private val settings: Settings = Settings()
 @Composable
 fun HomeScreen(
     uiState: ResourceUiState<List<ResponseData>>,
-               navigator:Navigator) {
+    navigator: NavController
+) {
 
     val colors = getColorsTheme()
     var usuarioState by remember { mutableStateOf("") }
@@ -207,7 +210,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun MenuItemCard(menu: data_menu, index: Int, navigator: Navigator, photoUrl: String) {
+fun MenuItemCard(menu: data_menu, index: Int, navigator: NavController, photoUrl: String) {
     val colorIndex = index % ColorIcons.colors.size
 
 
